@@ -20,6 +20,15 @@ public class CocktailResource {
         this.ingredients = ingredients;
     }
 
+    public CocktailResource(UUID cocktailId) {
+        this.cocktailId = cocktailId;
+    }
+
+    public CocktailResource() {
+        this.cocktailId = cocktailId;
+    }
+
+
     public UUID getCocktailId() {
         return cocktailId;
     }
