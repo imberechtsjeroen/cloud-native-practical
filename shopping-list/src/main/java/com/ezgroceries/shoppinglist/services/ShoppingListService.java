@@ -11,4 +11,10 @@ public class ShoppingListService {
         shoppingList.setShoppingListId(UUID.randomUUID());
         return shoppingList;
     }
+
+    public ShoppingList getShoppingList(long Id){
+        return shoppingList;
+    }
+
+
 }

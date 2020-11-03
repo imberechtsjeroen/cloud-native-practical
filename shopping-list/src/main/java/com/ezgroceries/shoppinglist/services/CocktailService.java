@@ -1,6 +1,7 @@
 package com.ezgroceries.shoppinglist.services;
 
 import com.ezgroceries.shoppinglist.resources.CocktailResource;
+import com.ezgroceries.shoppinglist.resources.CocktailResponse;
 import java.util.List;
 
 public class CocktailService {

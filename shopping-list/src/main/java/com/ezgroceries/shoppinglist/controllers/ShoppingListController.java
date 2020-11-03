@@ -2,7 +2,9 @@ package com.ezgroceries.shoppinglist.controllers;
 import com.ezgroceries.shoppinglist.resources.ShoppingList;
 import com.ezgroceries.shoppinglist.services.ShoppingListService;
 import java.util.List;
+import javax.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +23,12 @@ public class ShoppingListController {
     public ShoppingList addShoppingList(@RequestBody ShoppingList shoppingList) {
         return shoppingListService.addShoppingList(shoppingList);
     }
+
+    @GetMapping
+    @RequestMapping(value = "/{id}")
+    public ShoppingList getShoppingList(@PathParam("id") long id){
+        return null;
+    }
+
 
 }

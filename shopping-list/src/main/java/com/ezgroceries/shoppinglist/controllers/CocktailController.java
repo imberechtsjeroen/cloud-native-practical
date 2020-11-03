@@ -1,12 +1,12 @@
 package com.ezgroceries.shoppinglist.controllers;
 
+import com.ezgroceries.shoppinglist.resources.CocktailResponse;
 import com.ezgroceries.shoppinglist.resources.CocktailResource;
 import com.ezgroceries.shoppinglist.services.CocktailService;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import javax.annotation.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,14 +25,26 @@ public class CocktailController {
         return getDummyResources();
     }
 
-    CocktailService cocktailService = new CocktailService();
+//    CocktailService cocktailService = new CocktailService();
+
 
     @PostMapping
     @RequestMapping(value = "/shopping-lists/{id}/cocktails", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<CocktailResource> addCocktailResource(@RequestBody List<CocktailResource> cocktailResource) {
-        return cocktailService.addCocktailResource(cocktailResource);
+      public List<CocktailResponse> addCocktailResource(@RequestBody List<CocktailResource>  cocktailResources){
+        List<CocktailResponse> cocktailResponses = new ArrayList<>();
+        int size = cocktailResources.size();
+        for (int i = 0; i < size; i++) {
+            CocktailResource cocktailResource = cocktailResources.get(i);
+            CocktailResponse cocktailResponse = new CocktailResponse();
+            cocktailResponse.setCocktailId(cocktailResource.getCocktailId());
+            cocktailResponses.add(cocktailResponse);
+        }
+        return cocktailResponses;
     }
+//    public List<CocktailResource> addCocktailResource(@RequestBody List<CocktailResource> cocktailResource) {
+//       return cocktailService.addCocktailResource(cocktailResource);
+//    }
 
     private List<CocktailResource> getDummyResources() {
         return Arrays.asList(
