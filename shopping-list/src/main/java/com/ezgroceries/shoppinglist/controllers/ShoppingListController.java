@@ -32,7 +32,7 @@ public class ShoppingListController {
 
     @GetMapping
     @RequestMapping(value = "/shopping-lists/{id}", produces = "application/json")
-    public ShoppingListResponse get(@RequestParam String search){
+    public ShoppingListResponse getit(){
             return getDummyResource();
         }
 

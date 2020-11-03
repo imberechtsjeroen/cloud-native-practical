@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CocktailController {
 
     @GetMapping
-    @RequestMapping(value = "/cocktails", produces = "application/json", consumes = "application/json")
-    public List<CocktailResource> get(@RequestParam String search) {
+    @RequestMapping(value = "/cocktails", produces = "application/json")
+    public List<CocktailResource> get() {
         return getDummyResources();
     }
 
