@@ -33,14 +33,31 @@ public class ShoppingListController {
     @GetMapping
     @RequestMapping(value = "/shopping-lists/{id}", produces = "application/json")
     public ShoppingListResponse get(@RequestParam String search){
-            return getDummyResources();
+            return getDummyResource();
         }
 
-        private ShoppingListResponse getDummyResources(){
+        private ShoppingListResponse getDummyResource(){
 
         return new ShoppingListResponse(UUID.fromString("90689338-499a-4c49-af90-f1e73068ad4f"), "Stephanie's birthday",
                             Arrays.asList("Tequila", "Triple sec", "Salt", "Blue Curaçao"));
     }
+
+    @GetMapping
+    @RequestMapping(value = "/shopping-lists", produces = "application/json")
+    public List<ShoppingListResponse> get(){
+        return getDummyResources();
+    }
+
+    private List<ShoppingListResponse> getDummyResources(){
+
+        return Arrays.asList(
+        new ShoppingListResponse(UUID.fromString("90689338-499a-4c49-af90-f1e73068ad4f"), "Stephanie's birthday",
+                Arrays.asList("Tequila", "Triple sec", "Salt", "Blue Curaçao")),
+                new ShoppingListResponse(UUID.fromString("6c7d09c2-8a25-4d54-a979-25ae779d2465"), "My birthday",
+                        Arrays.asList("Tequila", "Triple sec", "Salt", "Blue Curaçao")));
+    }
+
+
 
 
 }
