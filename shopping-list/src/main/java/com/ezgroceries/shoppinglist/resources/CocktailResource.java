@@ -30,7 +30,7 @@ public class CocktailResource {
         return cocktailId;
     }
 
-    public void setCocktailId() {
+    public void setCocktailId(UUID uuid) {
         this.cocktailId = cocktailId;
     }
 
@@ -68,5 +68,9 @@ public class CocktailResource {
 
     public List<String> getIngredients() {
         return ingredients;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
     }
 }
