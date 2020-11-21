@@ -25,7 +25,24 @@ public class CocktailEntity {
     @Convert(converter = StringSetConverter.class)
     private Set<String> ingredients;
 
-    public CocktailEntity(){}
+    public CocktailEntity() {
+        // default constructor needed to save entities
+    }
+
+    public CocktailEntity(String name, String idDrink, Set<String> ingredients){
+        this.name = name;
+        this.idDrink = idDrink;
+        this.ingredients = ingredients;
+        this.entityId = UUID.randomUUID();
+    }
+
+    public CocktailEntity(UUID id, String idDrink, String name, Set<String> ingredients) {
+        this.entityId = id;
+        this.idDrink = idDrink;
+        this.name = name;
+        this.ingredients = ingredients;
+    }
+
 
     public UUID getEntityId() {
         return entityId;

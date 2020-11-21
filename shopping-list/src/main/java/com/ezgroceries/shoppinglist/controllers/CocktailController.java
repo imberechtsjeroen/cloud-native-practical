@@ -28,16 +28,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CocktailController {
 
-    private final CocktailDBClient cocktailDBClient;
+    private final CocktailService cocktailService;
 
-    private CocktailController(CocktailDBClient cocktailDBClient) { this.cocktailDBClient = cocktailDBClient; }
+    private CocktailController(CocktailService cocktailService){this.cocktailService = cocktailService;}
+
 
     @GetMapping
     @RequestMapping(value = "/cocktails", produces = "application/json")
     public List<CocktailResource> get(@RequestParam String search) {
-    return mapDBCclient(cocktailDBClient.searchCocktails(search));}
-
-//    CocktailService cocktailService = new CocktailService();
+        return cocktailService.searchCocktails(search);
+        }
 
 
     @PostMapping
@@ -54,9 +54,6 @@ public class CocktailController {
         }
         return cocktailResponses;
     }
-//    public List<CocktailResource> addCocktailResource(@RequestBody List<CocktailResource> cocktailResource) {
-//       return cocktailService.addCocktailResource(cocktailResource);
-//    }
 
     private List<CocktailResource> getDummyResources() {
         return Arrays.asList(
@@ -74,60 +71,6 @@ public class CocktailController {
                         Arrays.asList("Tequila", "Blue Curacao", "Lime juice", "Salt")));
     }
 
-    private List<CocktailResource> mapDBCclient(CocktailDBResponse cocktailDBResponse) {
-        return cocktailDBResponse.getDrinks().stream()
-                .map(drinkResource -> new CocktailResource(
-                                UUID.randomUUID(),
-                                drinkResource.getStrDrink(),
-                                drinkResource.getStrGlass(),
-                                drinkResource.getStrInstructions(),
-                                drinkResource.getStrDrinkThumb(),
-                                Stream.of(
-                                        drinkResource.getStrIngredient1(),
-                                        drinkResource.getStrIngredient2(),
-                                        drinkResource.getStrIngredient3(),
-                                        drinkResource.getStrIngredient4(),
-                                        drinkResource.getStrIngredient5(),
-                                        drinkResource.getStrIngredient6(),
-                                        drinkResource.getStrIngredient7()
-                                ).filter(StringUtils::isNotBlank).collect(Collectors.toList())
-                        )
-                ).collect(Collectors.toList());
-    }
-
-
-
-    private List<CocktailResource> mapDBCclient2(CocktailDBResponse cocktailDBResponse) {
-        List<DrinkResource> drinks = cocktailDBResponse.getDrinks();
-        List<CocktailResource> cocktailResources = new ArrayList<>(drinks.size());
-        for (int i = 0; i < drinks.size(); i++) {
-            CocktailResource cocktailResource = new CocktailResource();
-            cocktailResource.setCocktailId(UUID.randomUUID());
-            cocktailResource.setName(drinks.get(i).getStrDrink());
-            cocktailResource.setGlass(drinks.get(i).getStrGlass());
-            cocktailResource.setImage(drinks.get(i).getStrDrinkThumb());
-            cocktailResource.setInstructions(drinks.get(i).getStrInstructions());
-            List<String> ingredients = new ArrayList<>(7);
-            if (drinks.get(i).getStrIngredient1() != null) {
-                ingredients.set(0, drinks.get(i).getStrIngredient1());
-            }
-            if (drinks.get(i).getStrIngredient2() != null) {
-                ingredients.set(1, drinks.get(i).getStrIngredient1());
-            }
-            if (drinks.get(i).getStrIngredient3() != null) {
-                ingredients.set(2, drinks.get(i).getStrIngredient1());
-            }
-            if (drinks.get(i).getStrIngredient4() != null) {
-                ingredients.set(3, drinks.get(i).getStrIngredient1());
-            }
-            if (drinks.get(i).getStrIngredient5() != null) {
-                ingredients.set(4, drinks.get(i).getStrIngredient1());
-            }
-            cocktailResource.setIngredients(ingredients);
-            cocktailResources.add(cocktailResource);
-        }
-        return cocktailResources;
-    }
 }
 
 

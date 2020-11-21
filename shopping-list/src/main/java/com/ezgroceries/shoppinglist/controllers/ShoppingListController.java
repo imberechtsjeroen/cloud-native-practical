@@ -21,15 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ShoppingListController {
 
-    ShoppingListService shoppingListService = new ShoppingListService();
+//    ShoppingListService shoppingListService = new ShoppingListService();
 
-    @PostMapping
+/*    @PostMapping
     @RequestMapping(value = "/shopping-lists", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ShoppingList addShoppingList(@RequestBody ShoppingList shoppingList) {
         return shoppingListService.addShoppingList(shoppingList);
     }
-
+*/
     @GetMapping
     @RequestMapping(value = "/shopping-lists/{id}", produces = "application/json")
     public ShoppingListResponse getit(){

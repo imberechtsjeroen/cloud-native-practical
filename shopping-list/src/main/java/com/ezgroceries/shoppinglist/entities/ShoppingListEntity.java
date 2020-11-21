@@ -15,6 +15,11 @@ import javax.persistence.Table;
 
     private String name;
 
+    public ShoppingListEntity(String name){
+        this.name = name;
+        this.entityId =  UUID.randomUUID();
+    }
+
     public ShoppingListEntity(){}
 
     public UUID getEntityId() {

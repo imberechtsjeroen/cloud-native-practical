@@ -1,19 +1,28 @@
 package com.ezgroceries.shoppinglist.services;
 
+import com.ezgroceries.shoppinglist.entities.ShoppingListEntity;
+import com.ezgroceries.shoppinglist.repositiries.ShoppingListRepository;
 import com.ezgroceries.shoppinglist.resources.ShoppingList;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ShoppingListService {
 
-    ShoppingList shoppingList = new ShoppingList();
+    private final ShoppingListRepository shoppingListRepository;
 
-    public ShoppingList addShoppingList(ShoppingList shoppingList){
-        shoppingList.setShoppingListId(UUID.randomUUID());
-        return shoppingList;
+    public ShoppingListService(ShoppingListRepository shoppingListRepository) {
+        this.shoppingListRepository = shoppingListRepository;
     }
 
-    public ShoppingList getShoppingList(long Id){
-        return shoppingList;
+    ShoppingListEntity shoppingListEntity = new ShoppingListEntity();
+
+    public ShoppingListEntity save(ShoppingListEntity shoppingListEntity) {
+        return shoppingListEntity;
+    }
+
+    public ShoppingListEntity findbyId(UUID Id){
+        return shoppingListEntity;
     }
 
 
