@@ -6,7 +6,9 @@ import com.ezgroceries.shoppinglist.resources.ShoppingListResponse;
 import com.ezgroceries.shoppinglist.services.ShoppingListService;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,45 +21,46 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "/shopping-lists", produces = "application/json")
 public class ShoppingListController {
 
-//    ShoppingListService shoppingListService = new ShoppingListService();
+    private final ShoppingListService shoppingListService;
 
-/*    @PostMapping
-    @RequestMapping(value = "/shopping-lists", produces = "application/json", consumes = "application/json")
+    public ShoppingListController(ShoppingListService shoppingListService) {
+        this.shoppingListService = shoppingListService;
+    }
+
+    @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ShoppingList addShoppingList(@RequestBody ShoppingList shoppingList) {
-        return shoppingListService.addShoppingList(shoppingList);
+    public ShoppingListResponse addShoppingList(@RequestBody Map<String, String> shoppingListBody) {
+        ShoppingListResponse shoppingList = shoppingListService.addShoppingList(shoppingListBody.get("name"));
+        return shoppingList;
     }
-*/
-    @GetMapping
-    @RequestMapping(value = "/shopping-lists/{id}", produces = "application/json")
-    public ShoppingListResponse getit(){
-            return getDummyResource();
-        }
 
-        private ShoppingListResponse getDummyResource(){
+    @GetMapping (value = "/{id}")
+    public ShoppingListResponse getList(@PathVariable String id) {
+            return shoppingListService.getList(id);}
 
-        return new ShoppingListResponse(UUID.fromString("90689338-499a-4c49-af90-f1e73068ad4f"), "Stephanie's birthday",
-                            Arrays.asList("Tequila", "Triple sec", "Salt", "Blue Curaçao"));
-    }
 
     @GetMapping
-    @RequestMapping(value = "/shopping-lists", produces = "application/json")
-    public List<ShoppingListResponse> get(){
-        return getDummyResources();
+    @ResponseStatus(HttpStatus.OK)
+    public List<ShoppingListResponse> getAllShoppingLists() {
+        return shoppingListService.getAllShoppingLists();
     }
 
-    private List<ShoppingListResponse> getDummyResources(){
-
-        return Arrays.asList(
-        new ShoppingListResponse(UUID.fromString("90689338-499a-4c49-af90-f1e73068ad4f"), "Stephanie's birthday",
-                Arrays.asList("Tequila", "Triple sec", "Salt", "Blue Curaçao")),
-                new ShoppingListResponse(UUID.fromString("6c7d09c2-8a25-4d54-a979-25ae779d2465"), "My birthday",
-                        Arrays.asList("Tequila", "Triple sec", "Salt", "Blue Curaçao")));
-    }
-
-
-
+    @PostMapping(value = "/{id}/cocktails",consumes = "application/json" )
+    @ResponseStatus(HttpStatus.OK)
+    public ShoppingListResponse addCocktails(@PathVariable String id, @RequestBody List<Map<String, String>> shoppingListBody) {
+        List<String> cocktails = shoppingListBody.stream().map(map -> map.get("cocktailId")).collect(Collectors.toList());
+        shoppingListService.addCocktails(id, cocktails);
+        return shoppingListService.getList(id);    }
 
 }
+
+
+
+
+
+
+
+

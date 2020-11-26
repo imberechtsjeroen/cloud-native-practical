@@ -9,11 +9,6 @@ public class ShoppingListResponse {
     private String name;
     private List<String> ingredients;
 
-    public ShoppingListResponse(){
-        this.shoppingListId = shoppingListId;
-        this.name = name;
-        this.ingredients = ingredients;
-    }
 
     public ShoppingListResponse(UUID shoppingListId, String name, List<String> ingredients) {
         this.shoppingListId = shoppingListId;
@@ -21,20 +16,21 @@ public class ShoppingListResponse {
         this.ingredients = ingredients;
     }
 
-    public UUID getShoppingListId() {
-        return shoppingListId;
-    }
+    public ShoppingListResponse() {
+     }
 
-    public void setShoppingListId(UUID shoppingListId) {
+    public ShoppingListResponse(UUID shoppingListId) {
         this.shoppingListId = shoppingListId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+    }
+
+    public ShoppingListResponse(UUID shoppingListId, String name) {
+        this.shoppingListId = shoppingListId;
+        this.name = name;
+    }
+
+    public void addIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public List<String> getIngredients() {
@@ -43,5 +39,13 @@ public class ShoppingListResponse {
 
     public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public UUID getShoppingListId() {
+        return shoppingListId;
+    }
+
+    public String getName() {
+        return name;
     }
 }

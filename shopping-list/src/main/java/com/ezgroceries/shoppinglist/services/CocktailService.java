@@ -32,6 +32,10 @@ public class CocktailService {
         return mergeCocktails(dBresponse.getDrinks());
     }
 
+    public List<CocktailEntity> findAllById(List<String> cocktails) {
+        return cocktailRepository.findAllByEntityIdIn(cocktails.stream().map(UUID::fromString).collect(Collectors.toList()));
+    }
+
     private List<CocktailResource> mergeCocktails(List<DrinkResource> drinks) {
         // Get all the idDrink attributes
         List<String> ids = drinks.stream().map(DrinkResource::getIdDrink).collect(Collectors.toList());

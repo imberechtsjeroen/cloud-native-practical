@@ -3,8 +3,14 @@ package com.ezgroceries.shoppinglist;
 import com.ezgroceries.shoppinglist.controllers.CocktailDBCClient.CocktailDBClient;
 import com.ezgroceries.shoppinglist.model.DrinkResource;
 import com.ezgroceries.shoppinglist.resources.CocktailDBResponse;
+import com.ezgroceries.shoppinglist.resources.CocktailResource;
+import com.ezgroceries.shoppinglist.resources.ShoppingListResponse;
+import com.ezgroceries.shoppinglist.services.CocktailService;
+import com.ezgroceries.shoppinglist.services.ShoppingListService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,10 +38,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Autowired
         private MockMvc mockMvc;
 
-        final String expectedName = "Stephanie's birthday";
 
     @MockBean
-    private CocktailDBClient cocktailDBClient;
+    private CocktailService cocktailService;
+    @MockBean
+    private ShoppingListService shoppingListService;
+
 
     /**
          * Test a GET to /shoppingList.
@@ -47,11 +56,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Test
         public void getAllShoppingListsTest() throws Exception {
 
-            this.mockMvc //
+            given(cocktailService.searchCocktails("Russian")).willReturn(getMockedCocktails());
+            mockMvc //
                     .perform(get("/shopping-lists") //
                             .accept(MediaType.parseMediaType("application/json"))) //
                     .andExpect(status().isOk()) //
-                    .andExpect(content().contentType("application/json"));
+                    .andExpect(content().contentType("application/json"))
+                            .andExpect(jsonPath("$[1].ingredients[0]").value("Wodka"))
+                    .andExpect(jsonPath("$[1].ingredients[1]").value("Blue Curacao"))
+                    .andExpect(jsonPath("$[1].ingredients[2]").value("Lime juice"))
+                    .andExpect(jsonPath("$[1].ingredients[3]").value("Salt"));
+            verify(cocktailService).searchCocktails("Russian");
+
         }
 
         /**
@@ -61,14 +77,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
          */
         @Test
         public void getOneShoppingListTest() throws Exception {
-
-            this.mockMvc.perform(get("/shopping-lists/5") //
+            given(shoppingListService.getList("eb18bb7c-61f3-4c9f-981c-55b1b8ee8915")).willReturn(getOneShoppingListMock());
+            this.mockMvc.perform(get("/shopping-lists/eb18bb7c-61f3-4c9f-981c-55b1b8ee8915") //
                     .accept(MediaType.parseMediaType("application/json"))) //
                     .andExpect(status().isOk()) //
+                    .andExpect(jsonPath("$.shoppingListId").value("eb18bb7c-61f3-4c9f-981c-55b1b8ee8915"))
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.name").value(expectedName));
-
+                    .andExpect(jsonPath("$.ingredients[3]").value("Salt"))
+                    .andExpect(jsonPath("$.name").value("me, myself and I"));
+            verify(shoppingListService).getList("eb18bb7c-61f3-4c9f-981c-55b1b8ee8915");
         }
+
+    private ShoppingListResponse getOneShoppingListMock() {
+        ShoppingListResponse shoppingList = getShoppingListMock();
+        shoppingList.setIngredients(Arrays.asList("Vodka",
+                "Triple sec",
+                "Lime juice",
+                "Salt",
+                "Blue Curacao"));
+        return shoppingList;
+    }
+
 
     /**
      * Test a POST to /shoppingList.
@@ -79,14 +108,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
      *             If anything fails.
      */
     @Test
-    public void addAllShoppingListsTest() throws Exception {
+    public void createShoppingListsTest() throws Exception {
 
-        this.mockMvc //
-                .perform(post("/shopping-lists") //
-                        .accept(MediaType.parseMediaType("application/json"))) //
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(content().contentType("application/json"));
+        given(shoppingListService.addShoppingList("me, myself and I")).willReturn(getShoppingListMock());
+        mockMvc
+                .perform(post("/shopping-lists")
+                        .accept(MediaType.parseMediaType("application/json"))
+                        .content("{\"name\": \"me, myself and I\"}")
+                        .contentType(MediaType.parseMediaType("application/json"))
+                )
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("shoppingListId").value("eb18bb7c-61f3-4c9f-981c-55b1b8ee8915"))
+                .andExpect(jsonPath("name").value("me, myself and I"));
+        verify(shoppingListService).addShoppingList("me, myself and I");
+    }
 
+    private ShoppingListResponse getShoppingListMock() {
+        return new ShoppingListResponse(UUID.fromString("eb18bb7c-61f3-4c9f-981c-55b1b8ee8915"), "me, myself and I");
     }
 
 
@@ -101,40 +140,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Test
     public void getAllCocktailsTest() throws Exception {
 
-        given(cocktailDBClient.searchCocktails("Russian")).willReturn(getMockedCocktails());
+        given(cocktailService.searchCocktails("Russian")).willReturn(getMockedCocktails());
         this.mockMvc //
                 .perform(get("/cocktails") //
                         .param("search", "Russian")//
                         .accept(MediaType.parseMediaType("application/json"))) //
                 .andExpect(status().isOk()) //
-                .andExpect(content().contentType("application/json"));
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$[0].ingredients[2]").value("Lime juice"))
+                .andExpect(jsonPath("$[1].ingredients[0]").value("Wodka"));
+
     }
 
-    private CocktailDBResponse getMockedCocktails() {
-        List<DrinkResource> drinks = new ArrayList<>();
-        DrinkResource drinkResource = new DrinkResource();
-        drinkResource.setStrDrink("Crazy Russian");
-        drinkResource.setStrGlass("Moscow glass");
-        drinkResource.setStrInstructions("shake it");
-        drinkResource.setStrDrinkThumb("https://www.thecocktaildb.com/images/media/drink/wpxpvu1439905379.jpg");
-        drinkResource.setStrIngredient1("Wodka");
-        drinkResource.setStrIngredient2("Triple sec");
-        drinkResource.setStrIngredient3("Lime juice");
-        drinkResource.setStrIngredient4("Salt");
-        drinks.add(drinkResource);
-        drinkResource = new DrinkResource();
-        drinkResource.setStrDrink("Poetin's favourite");
-        drinkResource.setStrGlass("Washington ass");
-        drinkResource.setStrInstructions("Shake it 5 mins");
-        drinkResource.setStrDrinkThumb("https://www.thecocktaildb.com/images/media/drink/qtvvyq1439905913.jpg");
-        drinkResource.setStrIngredient1("Wodka");
-        drinkResource.setStrIngredient2("Blue Curacao");
-        drinkResource.setStrIngredient3("Lime juice");
-        drinkResource.setStrIngredient4("Salt");
-        drinks.add(drinkResource);
-        CocktailDBResponse cocktailDBResponse = new CocktailDBResponse();
-        cocktailDBResponse.setDrinks(drinks);
-        return cocktailDBResponse;
+    private List<CocktailResource> getMockedCocktails() {
+        return Arrays.asList(
+                new CocktailResource(UUID.randomUUID(), "Crazy Russian", "Moscow glass", "",
+                        "https://www.thecocktaildb.com/images/media/drink/wpxpvu1439905379.jpg", Arrays.asList(
+                        "Wodka", "Triple sec", "Lime juice", "Salt"
+                )),
+                new CocktailResource(UUID.randomUUID(), "Putin's favourite", "Washington ass", "",
+                        "https://www.thecocktaildb.com/images/media/drink/qtvvyq1439905913.jpg", Arrays.asList(
+                        "Wodka", "Blue Curacao", "Lime juice", "Salt"
+                )));
     }
 
     /**
@@ -155,9 +182,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .andExpect(content().contentType("application/json"));
 
     }
-
-
-
     }
 
 
