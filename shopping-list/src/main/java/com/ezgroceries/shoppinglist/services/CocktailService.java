@@ -1,11 +1,11 @@
 package com.ezgroceries.shoppinglist.services;
 
-import com.ezgroceries.shoppinglist.controllers.CocktailDBCClient.CocktailDBClient;
-import com.ezgroceries.shoppinglist.entities.CocktailEntity;
+import com.ezgroceries.shoppinglist.services.CocktailDBCClient.CocktailDBClient;
+import com.ezgroceries.shoppinglist.persistence.CocktailEntity;
 import com.ezgroceries.shoppinglist.model.DrinkResource;
-import com.ezgroceries.shoppinglist.repositiries.CocktailRepository;
-import com.ezgroceries.shoppinglist.resources.CocktailDBResponse;
-import com.ezgroceries.shoppinglist.resources.CocktailResource;
+import com.ezgroceries.shoppinglist.persistence.CocktailRepository;
+import com.ezgroceries.shoppinglist.contracts.external.CocktailDBResponse;
+import com.ezgroceries.shoppinglist.contracts.resources.CocktailResource;
 import io.micrometer.core.instrument.util.StringUtils;
 import java.util.List;
 import java.util.Map;

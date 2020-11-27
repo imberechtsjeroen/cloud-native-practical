@@ -1,17 +1,15 @@
 package com.ezgroceries.shoppinglist.services;
 
-import com.ezgroceries.shoppinglist.entities.CocktailEntity;
-import com.ezgroceries.shoppinglist.entities.ShoppingListEntity;
-import com.ezgroceries.shoppinglist.model.HandledException;
-import com.ezgroceries.shoppinglist.repositiries.ShoppingListRepository;
-import com.ezgroceries.shoppinglist.resources.ShoppingListResponse;
+import com.ezgroceries.shoppinglist.persistence.CocktailEntity;
+import com.ezgroceries.shoppinglist.persistence.ShoppingListEntity;
+import com.ezgroceries.shoppinglist.persistence.ShoppingListRepository;
+import com.ezgroceries.shoppinglist.contracts.responses.ShoppingListResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 
 @Service

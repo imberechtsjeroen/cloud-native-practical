@@ -1,4 +1,4 @@
-package com.ezgroceries.shoppinglist.converters;
+package com.ezgroceries.shoppinglist.utils;
 
 import java.util.Arrays;
 import java.util.HashSet;

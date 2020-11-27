@@ -1,4 +1,4 @@
-package com.ezgroceries.shoppinglist.resources;
+package com.ezgroceries.shoppinglist.contracts.external;
 
 import com.ezgroceries.shoppinglist.model.DrinkResource;
 import java.util.List;

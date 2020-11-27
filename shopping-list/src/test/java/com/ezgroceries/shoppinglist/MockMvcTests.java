@@ -1,17 +1,12 @@
 package com.ezgroceries.shoppinglist;
 
-import com.ezgroceries.shoppinglist.controllers.CocktailDBCClient.CocktailDBClient;
-import com.ezgroceries.shoppinglist.model.DrinkResource;
-import com.ezgroceries.shoppinglist.resources.CocktailDBResponse;
-import com.ezgroceries.shoppinglist.resources.CocktailResource;
-import com.ezgroceries.shoppinglist.resources.ShoppingListResponse;
+import com.ezgroceries.shoppinglist.contracts.resources.CocktailResource;
+import com.ezgroceries.shoppinglist.contracts.responses.ShoppingListResponse;
 import com.ezgroceries.shoppinglist.services.CocktailService;
 import com.ezgroceries.shoppinglist.services.ShoppingListService;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;

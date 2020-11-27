@@ -1,6 +1,5 @@
-package com.ezgroceries.shoppinglist.entities;
+package com.ezgroceries.shoppinglist.persistence;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;

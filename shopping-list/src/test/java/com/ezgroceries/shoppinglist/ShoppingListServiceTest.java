@@ -10,10 +10,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static java.util.Optional.of;
 
 
-import com.ezgroceries.shoppinglist.entities.CocktailEntity;
-import com.ezgroceries.shoppinglist.entities.ShoppingListEntity;
-import com.ezgroceries.shoppinglist.repositiries.ShoppingListRepository;
-import com.ezgroceries.shoppinglist.resources.ShoppingListResponse;
+import com.ezgroceries.shoppinglist.persistence.CocktailEntity;
+import com.ezgroceries.shoppinglist.persistence.ShoppingListEntity;
+import com.ezgroceries.shoppinglist.persistence.ShoppingListRepository;
+import com.ezgroceries.shoppinglist.contracts.responses.ShoppingListResponse;
 import com.ezgroceries.shoppinglist.services.CocktailService;
 import com.ezgroceries.shoppinglist.services.ShoppingListService;
 import java.util.Arrays;
@@ -22,8 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

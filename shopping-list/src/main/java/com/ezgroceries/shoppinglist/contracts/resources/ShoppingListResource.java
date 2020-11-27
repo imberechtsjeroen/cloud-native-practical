@@ -1,13 +1,13 @@
-package com.ezgroceries.shoppinglist.resources;
+package com.ezgroceries.shoppinglist.contracts.resources;
 
 import java.util.UUID;
 
-public class ShoppingList {
+public class ShoppingListResource {
 
     private UUID shoppingListId;
     private String name;
 
-    public ShoppingList(){
+    public ShoppingListResource(){
         this.shoppingListId = (UUID.randomUUID());
         this.name = name;
     }
