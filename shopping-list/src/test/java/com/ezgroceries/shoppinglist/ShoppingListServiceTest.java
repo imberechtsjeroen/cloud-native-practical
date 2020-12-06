@@ -62,8 +62,8 @@ public class ShoppingListServiceTest {
         ShoppingListEntity entity = new ShoppingListEntity("myFavourite");
         when(cocktailService.findAllById(cocktails)).thenReturn(
                 Arrays.asList(
-                        new CocktailEntity(Russianuuid, "ONE", "Moscow", ingredients),
-                        new CocktailEntity(Margeritauuid, "TWO", "Philly", ingredients)));
+                        new CocktailEntity(Russianuuid, "ONE", "Moscow", ingredients, "thinyGlass", "shakeIt", "Lady"),
+                        new CocktailEntity(Margeritauuid, "TWO", "Philly", ingredients, "small", "Slightly stir it up", "Monsieur")));
         when(repository.findById(id)).thenReturn(of(entity));
         service.addCocktails(id.toString(), cocktails);
         verify(repository).save(entity);

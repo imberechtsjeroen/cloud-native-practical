@@ -48,6 +48,7 @@ public class ShoppingListService {
         List<CocktailEntity> cocktails = shoppingListEntity.getCocktails();
         List<String> ids = cocktails.stream().map(CocktailEntity::getEntityId).map(UUID::toString).collect(Collectors.toList());
         List<String> ingredients = cocktailService.findAllById(ids).stream().map(CocktailEntity::getIngredients).flatMap(Set::stream).distinct().collect(Collectors.toList());
+
         return new ShoppingListResponse(shoppingListEntity.getEntityId(), shoppingListEntity.getName(), ingredients);}
 
     public ShoppingListResponse addShoppingList(String name) {
